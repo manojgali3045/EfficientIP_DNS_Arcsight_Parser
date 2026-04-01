@@ -1,0 +1,55 @@
+# FlexAgent Regex Configuration File
+do.unparsed.events=true
+
+regex=(\\w+)\\[(\\d+)\\]\:\\s+(.*)
+
+token.count=3
+
+token[0].name=Message
+token[0].type=String
+
+token[1].name=msg
+token[1].type=Long
+
+token[2].name=submsg
+token[2].type=String
+
+
+submessage.messageid.token=Message
+submessage.token=submsg
+
+
+
+event.deviceCustomNumber1=msg
+event.deviceVendor=__stringConstant("Efficient IP")
+event.deviceProduct=__stringConstant("DNS Logs")
+event.deviceCustomNumber1Label=__stringConstant("named")
+event.name=__stringConstant("DNS Logs")
+
+
+#l10n.filename.prefix=
+
+submessage.count=1
+
+submessage[0].messageid=named
+submessage[0].pattern.count=9
+submessage[0].pattern[0].regex=\\w+\\s+\\@(\\S+) (\\d+.\\d+.\\d+.\\d+)\\\#(\\d+) \\((.*?)\\)\: (view .*? (IN) \\w+) \\+\\S+ \\((\\d+.\\d+.\\d+.\\d+)\\)
+submessage[0].pattern[0].fields=event.deviceCustomString1,event.sourceAddress,event.sourcePort,event.destinationNtDomain,event.message,event.deviceAction,event.destinationAddress
+submessage[0].pattern[0].extramappings=event.deviceCustomString1Label\=__stringConstant("Client ID")
+
+submessage[0].pattern[1].regex=client \\@(\\S+) (\\d+.\\d+.\\d+.\\d+)\\\#(\\d+)\: (view .*? (\\S+.com))\\.
+submessage[0].pattern[1].fields=event.deviceCustomString1,event.sourceAddress,event.sourcePort,event.message,event.destinationNtDomain
+submessage[0].pattern[1].extramappings=event.deviceCustomString1Label\=__stringConstant("Client ID")
+
+submessage[0].pattern[2].regex=client \\@(\\S+) (\\d+.\\d+.\\d+.\\d+)\\\#(\\d+)\: (view [^,]{0,})
+submessage[0].pattern[2].fields=event.deviceCustomString1,event.sourceAddress,event.sourcePort,event.message
+submessage[0].pattern[2].extramappings=event.deviceCustomString1Label\=__stringConstant("Client ID")
+
+submessage[0].pattern[3].regex=(received .*?)\: (\\d+.\\d+.\\d+.\\d+)\\\#(\\d+)
+submessage[0].pattern[3].fields=event.message,event.sourceAddress,event.sourcePort
+
+submessage[0].pattern[4].regex=resolver.*
+submessage[0].pattern[4].fields=event.name
+
+submessage[0].pattern[5].regex=(timed .*? \\'(.*?)\\/.*?)\: (\\d+.\\d+.\\d+.\\d+)\\\#(\\d+)
+submessage[0].pattern[5].fields=event.message,event.destinationNtDomain,event.sourceAddress,event.sourcePort
